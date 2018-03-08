@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="@dimen/default_space_1_5"
+    android:background="@color/whats_new_dialog_bg"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="@dimen/default_space_1_5"
+        android:text="@string/whats_new_dialog_title"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_xl" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <include layout="@layout/view_whatsnew_content" />
+
+            </LinearLayout>
+
+        </ScrollView>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/default_shadow_height"
+            android:background="@drawable/bg_shadow_bottom" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/default_shadow_height"
+            android:layout_gravity="bottom"
+            android:background="@drawable/bg_shadow_top" />
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:gravity="end"
+        android:layoutDirection="locale"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/view_whats_new_dialog_rate_us"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="?selectableItemBackground"
+            android:gravity="center"
+            android:minWidth="110dp"
+            android:padding="@dimen/default_space"
+            android:text="@string/whats_new_dialog_support_us"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/text_size_l" />
+
+        <TextView
+            android:id="@+id/view_whats_new_dialog_ok"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="?selectableItemBackground"
+            android:gravity="center"
+            android:minWidth="110dp"
+            android:padding="@dimen/default_space"
+            android:text="@android:string/ok"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/text_size_l" />
+
+    </LinearLayout>
+
+</LinearLayout>

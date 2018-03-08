@@ -1,12 +1,22 @@
 package fr.bowser.behaviortracker.home
 
+import android.content.Context
 import fr.bowser.behaviortracker.notification.TimerNotificationManager
 import fr.bowser.behaviortracker.timer.TimerListManager
+import fr.bowser.behaviortracker.update.UpdateUtils
 
 class HomePresenter(private val view: HomeContract.View,
+                    val context: Context,
                     private val timerNotificationManager: TimerNotificationManager,
                     private val timerListManager: TimerListManager)
     : HomeContract.Presenter {
+
+    init {
+        val displayUpdateDialog = UpdateUtils.checkIfFirstLaunchSinceUpdate(context)
+        if(displayUpdateDialog) {
+            view.displayUpdateDialog()
+        }
+    }
 
     override fun start() {
         timerNotificationManager.changeNotifOngoing(false)

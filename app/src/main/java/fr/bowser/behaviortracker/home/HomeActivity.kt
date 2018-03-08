@@ -11,6 +11,7 @@ import android.view.MenuItem
 import fr.bowser.behaviortracker.R
 import fr.bowser.behaviortracker.config.BehaviorTrackerApp
 import fr.bowser.behaviortracker.timerlist.TimerFragment
+import fr.bowser.behaviortracker.update.UpdateDialogFragment
 import javax.inject.Inject
 
 class HomeActivity : AppCompatActivity(), HomeContract.View {
@@ -52,6 +53,10 @@ class HomeActivity : AppCompatActivity(), HomeContract.View {
             }
         }
         return false
+    }
+
+    override fun displayUpdateDialog() {
+        UpdateDialogFragment.showUpdateDialog(this)
     }
 
     override fun displayResetAllDialog() {

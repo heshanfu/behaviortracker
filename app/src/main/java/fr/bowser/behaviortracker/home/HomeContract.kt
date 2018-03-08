@@ -6,6 +6,8 @@ interface HomeContract {
 
         fun displayResetAllDialog()
 
+        fun displayUpdateDialog()
+
     }
 
     interface Presenter{
