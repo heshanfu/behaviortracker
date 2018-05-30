@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.support.annotation.Keep
 import android.support.design.widget.FloatingActionButton
 import android.support.v4.app.Fragment
+import android.support.v4.app.SharedElementCallback
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -14,6 +15,7 @@ import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
+import android.view.View.OnLayoutChangeListener
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.ImageView
@@ -22,6 +24,7 @@ import fr.bowser.behaviortracker.R
 import fr.bowser.behaviortracker.config.BehaviorTrackerApp
 import fr.bowser.behaviortracker.createtimer.CreateTimerDialog
 import fr.bowser.behaviortracker.timer.Timer
+import fr.bowser.behaviortracker.utils.TransitionHelper
 import javax.inject.Inject
 
 
@@ -51,6 +54,9 @@ class TimerFragment : Fragment(), TimerContract.View {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        prepareTransitions()
+        postponeEnterTransition()
+
         return inflater.inflate(R.layout.fragment_timer, null)
     }
 
@@ -64,6 +70,30 @@ class TimerFragment : Fragment(), TimerContract.View {
 
         emptyListView = view.findViewById(R.id.empty_list_view)
         emptyListText = view.findViewById(R.id.empty_list_text)
+
+        scrollToPosition()
+    }
+
+    private fun scrollToPosition() {
+        list.addOnLayoutChangeListener(object : OnLayoutChangeListener {
+            override fun onLayoutChange(v: View,
+                                        left: Int,
+                                        top: Int,
+                                        right: Int,
+                                        bottom: Int,
+                                        oldLeft: Int,
+                                        oldTop: Int,
+                                        oldRight: Int,
+                                        oldBottom: Int) {
+                list.removeOnLayoutChangeListener(this)
+                val layoutManager = list.layoutManager
+                val viewAtPosition = layoutManager.findViewByPosition(TransitionHelper.INDEX)
+                if (viewAtPosition == null || layoutManager.isViewPartiallyVisible(
+                                viewAtPosition, false, true)) {
+                    list.post({ layoutManager.scrollToPosition(TransitionHelper.INDEX) })
+                }
+            }
+        })
     }
 
     override fun onStart() {
@@ -162,6 +192,20 @@ class TimerFragment : Fragment(), TimerContract.View {
                 outRect?.bottom = margin
             }
         })
+    }
+
+    private fun prepareTransitions() {
+        activity?.setExitSharedElementCallback(
+                object : SharedElementCallback() {
+                    override fun onMapSharedElements(names: List<String>, sharedElements: MutableMap<String, View>) {
+                        val selectedViewHolder = list
+                                .findViewHolderForAdapterPosition(TransitionHelper.INDEX)
+                        if (selectedViewHolder?.itemView == null) {
+                            return
+                        }
+                        sharedElements[names[0]] = selectedViewHolder.itemView.findViewById(R.id.timer_chrono)
+                    }
+                })
     }
 
     /**

@@ -45,7 +45,7 @@ interface TimerItemContract {
 
         fun onTimerNameUpdated(newTimerName: String)
 
-        fun onClickCard()
+        fun onCardClicked()
 
     }
 

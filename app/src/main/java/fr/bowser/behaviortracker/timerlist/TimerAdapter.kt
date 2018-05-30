@@ -23,7 +23,7 @@ class TimerAdapter : RecyclerView.Adapter<TimerAdapter.TimerViewHolder>() {
 
     override fun onBindViewHolder(holder: TimerViewHolder?, position: Int) {
         val timer = timerList[position]
-        holder?.view?.setTimer(timer)
+        holder?.view?.setTimer(timer, position)
     }
 
     override fun getItemCount(): Int {

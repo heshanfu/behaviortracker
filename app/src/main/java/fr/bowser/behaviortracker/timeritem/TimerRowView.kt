@@ -1,12 +1,14 @@
 package fr.bowser.behaviortracker.timeritem
 
+import android.app.Activity
 import android.content.Context
+import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.CardView
 import android.support.v7.widget.PopupMenu
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.inflate
+import android.view.ViewTreeObserver
 import android.view.WindowManager
 import android.widget.EditText
 import android.widget.ImageView
@@ -17,6 +19,7 @@ import fr.bowser.behaviortracker.showmode.ShowModeActivity
 import fr.bowser.behaviortracker.timer.Timer
 import fr.bowser.behaviortracker.utils.ColorUtils
 import fr.bowser.behaviortracker.utils.TimeConverter
+import fr.bowser.behaviortracker.utils.TransitionHelper
 import javax.inject.Inject
 
 
@@ -31,6 +34,8 @@ class TimerRowView(context: Context) :
     private val increaseChrono: TextView
     private val color: View
     private val btnPlayPause: ImageView
+
+    private var position: Int = -1
 
     @Inject
     lateinit var presenter: TimerItemPresenter
@@ -48,7 +53,7 @@ class TimerRowView(context: Context) :
         btnPlayPause = findViewById(R.id.timer_play_pause)
 
         color = findViewById(R.id.timer_color)
-        color.setOnClickListener { presenter.onClickCard() }
+        color.setOnClickListener { presenter.onCardClicked() }
         chrono = findViewById(R.id.timer_chrono)
         tvName = findViewById(R.id.timer_name)
         menu = findViewById(R.id.timer_menu)
@@ -74,14 +79,29 @@ class TimerRowView(context: Context) :
         increaseChrono.text = timeModification.toString()
     }
 
-    fun setTimer(timer: Timer) {
+    fun setTimer(timer: Timer, position: Int) {
+        this.position = position
         presenter.setTimer(timer)
 
         chrono.text = TimeConverter.convertSecondsToHumanTime(timer.time.toLong())
         tvName.text = timer.name
+
+        chrono.transitionName = "time:" + timer.id
+        tvName.transitionName = "name:" + timer.id
+        color.transitionName = "background:" + timer.id
+        btnPlayPause.transitionName = "status:" + timer.id
+
         color.setBackgroundColor(ColorUtils.getColor(context!!, timer.color))
 
         updateBtnPlayPause(timer.isActivate)
+
+        viewTreeObserver.addOnPreDrawListener(object : ViewTreeObserver.OnPreDrawListener {
+            override fun onPreDraw(): Boolean {
+                viewTreeObserver.removeOnPreDrawListener(this)
+                ActivityCompat.startPostponedEnterTransition(context as Activity)
+                return true
+            }
+        })
     }
 
     override fun timerUpdated(newTime: Long) {
@@ -160,7 +180,11 @@ class TimerRowView(context: Context) :
     }
 
     override fun startShowMode(id: Long) {
-        ShowModeActivity.startActivity(context, id)
+        TransitionHelper.INDEX = position
+        if (context !is Activity) {
+            throw IllegalStateException("Context should be an Activity")
+        }
+        ShowModeActivity.startActivity(context as Activity, chrono, tvName, color, btnPlayPause, id)
     }
 
     private fun displayRemoveConfirmationDialog() {

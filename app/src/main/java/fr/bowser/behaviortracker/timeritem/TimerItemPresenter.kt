@@ -34,7 +34,7 @@ class TimerItemPresenter(private val view: TimerItemContract.View,
         this.timer = timer
     }
 
-    override fun onClickCard() {
+    override fun onCardClicked() {
         view.startShowMode(timer.id)
     }
 

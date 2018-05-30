@@ -2,6 +2,6 @@
 <resources>
 
     <dimen name="show_mode_timer_time_text">56sp</dimen>
-    <dimen name="show_mode_timer_name_text">28sp</dimen>
+    <dimen name="show_mode_timer_name_text">@dimen/text_size_xxl</dimen>
 
 </resources>
