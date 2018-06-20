@@ -32,7 +32,7 @@ class ShowModeActivity : AppCompatActivity(), ShowModeContract.View {
         setContentView(R.layout.activity_show_mode)
 
         prepareSharedElementTransition()
-        postponeEnterTransition()
+        //postponeEnterTransition()
 
         setupGraph()
 

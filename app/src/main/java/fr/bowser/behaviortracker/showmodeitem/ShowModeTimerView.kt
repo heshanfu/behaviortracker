@@ -1,13 +1,10 @@
 package fr.bowser.behaviortracker.showmodeitem
 
-import android.app.Activity
 import android.content.Context
 import android.graphics.PorterDuff
 import android.graphics.drawable.RippleDrawable
 import android.support.constraint.ConstraintLayout
-import android.support.v4.app.ActivityCompat
 import android.view.View
-import android.view.ViewTreeObserver
 import android.widget.ImageView
 import android.widget.TextView
 import fr.bowser.behaviortracker.R
@@ -79,13 +76,13 @@ class ShowModeTimerView(context: Context) : ConstraintLayout(context),
         bg.transitionName = "background:" + timer.id
         timerState.transitionName = "status:" + timer.id
 
-        viewTreeObserver.addOnPreDrawListener(object : ViewTreeObserver.OnPreDrawListener {
+        /*viewTreeObserver.addOnPreDrawListener(object : ViewTreeObserver.OnPreDrawListener {
             override fun onPreDraw(): Boolean {
                 viewTreeObserver.removeOnPreDrawListener(this)
                 ActivityCompat.startPostponedEnterTransition(context as Activity)
                 return true
             }
-        })
+        })*/
     }
 
     private fun setupGraph() {

@@ -6,7 +6,6 @@ import android.support.v4.app.FragmentTransaction
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
-import android.text.TextUtils.replace
 import android.view.Menu
 import android.view.MenuItem
 import fr.bowser.behaviortracker.R
@@ -106,7 +105,7 @@ class HomeActivity : AppCompatActivity(), HomeContract.View {
     }
 
     private inline fun FragmentManager.inTransaction(func: FragmentTransaction.() -> FragmentTransaction) {
-        beginTransaction().func().commit()
+        beginTransaction().func().setReorderingAllowed(true).commit()
     }
 
     companion object {

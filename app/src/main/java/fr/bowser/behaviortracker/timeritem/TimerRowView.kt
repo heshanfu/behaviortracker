@@ -2,13 +2,11 @@ package fr.bowser.behaviortracker.timeritem
 
 import android.app.Activity
 import android.content.Context
-import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.CardView
 import android.support.v7.widget.PopupMenu
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewTreeObserver
 import android.view.WindowManager
 import android.widget.EditText
 import android.widget.ImageView
@@ -95,13 +93,13 @@ class TimerRowView(context: Context) :
 
         updateBtnPlayPause(timer.isActivate)
 
-        viewTreeObserver.addOnPreDrawListener(object : ViewTreeObserver.OnPreDrawListener {
+        /*viewTreeObserver.addOnPreDrawListener(object : ViewTreeObserver.OnPreDrawListener {
             override fun onPreDraw(): Boolean {
                 viewTreeObserver.removeOnPreDrawListener(this)
                 ActivityCompat.startPostponedEnterTransition(context as Activity)
                 return true
             }
-        })
+        })*/
     }
 
     override fun timerUpdated(newTime: Long) {

@@ -55,8 +55,6 @@ class TimerFragment : Fragment(), TimerContract.View {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         prepareTransitions()
-        postponeEnterTransition()
-
         return inflater.inflate(R.layout.fragment_timer, null)
     }
 
@@ -70,11 +68,10 @@ class TimerFragment : Fragment(), TimerContract.View {
 
         emptyListView = view.findViewById(R.id.empty_list_view)
         emptyListText = view.findViewById(R.id.empty_list_text)
-
-        scrollToPosition()
     }
 
     private fun scrollToPosition() {
+        postponeEnterTransition()
         list.addOnLayoutChangeListener(object : OnLayoutChangeListener {
             override fun onLayoutChange(v: View,
                                         left: Int,
@@ -92,12 +89,14 @@ class TimerFragment : Fragment(), TimerContract.View {
                                 viewAtPosition, false, true)) {
                     list.post({ layoutManager.scrollToPosition(TransitionHelper.INDEX) })
                 }
+                startPostponedEnterTransition()
             }
         })
     }
 
     override fun onStart() {
         super.onStart()
+        scrollToPosition()
         presenter.start()
     }
 
