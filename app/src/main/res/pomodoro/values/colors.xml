@@ -3,6 +3,7 @@
 
     <color name="pomodoro_pause_session">#ff6d00</color>
     <color name="pomodoro_resume_session">#64dd17</color>
-    <color name="pomodoro_start_session">#304ffe</color>
+    <color name="pomodoro_start_session">#ff1924</color>
+    <color name="pomodoro_leaf">#006c1f</color>
 
 </resources>

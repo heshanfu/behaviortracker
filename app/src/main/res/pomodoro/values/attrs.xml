@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="PomodoroFAB">
+        <attr name="leafColor" format="color" />
+        <attr name="leafLength" format="dimension" />
+        <attr name="bottomLeafLength" format="dimension" />
+        <attr name="topLeafLength" format="dimension" />
+        <attr name="leafWidth" format="dimension" />
+        <attr name="leafOffset" format="dimension" />
+    </declare-styleable>
+
+</resources>
