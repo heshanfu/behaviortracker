@@ -10,6 +10,8 @@ apply from: '../config/dependency/dependencies.gradle'
 
 apply plugin: 'io.fabric'
 
+apply plugin: "io.gitlab.arturbosch.detekt"
+
 // If release config detected, install it and use it
 if (project.hasProperty("behaviorTrackerSigningPath")) {
     apply from: "$behaviorTrackerSigningPath"
@@ -109,8 +111,11 @@ android {
     }
 }
 
-dependencies {
+configurations {
+    ktlint
+}
 
+dependencies {
     // Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:0.20"
@@ -141,6 +146,9 @@ dependencies {
         transitive = true
     }
 
+    // Static analyzer
+    ktlint "com.github.shyiko:ktlint:0.15.0"
+
     // Test
     testImplementation 'org.json:json:20180813'
     testImplementation 'junit:junit:4.12'
@@ -153,6 +161,30 @@ dependencies {
 
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha4'
 
+}
+
+detekt {
+    config = files("detekt-config.yml")
+    input = files(
+            "src/main/java",
+    )
+    parallel = true
+    disableDefaultRuleSets = false
+    debug = false
+    reports {
+        html {
+            enabled = true
+            destination = file("build/reports/detekt.html")
+        }
+    }
+}
+
+task ktlint(type: JavaExec, group: "verification") {
+    description = "Check Kotlin code style."
+    classpath = configurations.ktlint
+    main = "com.github.shyiko.ktlint.Main"
+    args "src/**/*.kt"
+    // args "--reporter=checkstyle, output=${buildDir}/ktlint.xml
 }
 
 def build_param = "${build}"
